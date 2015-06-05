@@ -1,12 +1,28 @@
-CREATE DATABASE chat;
-
-USE chat;
+DROP TABLE messages;
+DROP TABLE users;
+DROP TABLE rooms;
 
 CREATE TABLE messages (
-  /* Describe your table here.*/
+  text varchar(1000),
+  user_id int,
+  room_id int
 );
 
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name varchar(20)
+);
+
+CREATE TABLE rooms (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name varchar(20)
+);
+
+
 /* Create other tables and define schemas for them here! */
+
+
+
 
 
 
