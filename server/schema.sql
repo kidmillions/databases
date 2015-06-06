@@ -20,7 +20,7 @@ CREATE TABLE rooms (
 
 
 /* Create other tables and define schemas for them here! */
-
+INSERT INTO rooms VALUES(null, 'Hello');
 
 
 

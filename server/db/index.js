@@ -1,7 +1,6 @@
-var mysql = require('mysql');
+var sqlite3 = require('sqlite3');
+var path = require('path');
 
-// Create a database connection and export it from this file.
-// You will need to connect with the user "root", no password,
-// and to the database "chat".
+module.exports = new sqlite3.Database(path.join(__dirname, '../../chat'));
 
 
