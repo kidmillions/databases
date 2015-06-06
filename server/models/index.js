@@ -4,17 +4,17 @@ bluebird.promisifyAll(db);
 
 module.exports = {
   messages: {
-    get: function () {
-      db.run()
 
-    }, // a function which produces all the messages
+    get: function (callback) {
+      db.getAsync('SELECT u.name as username, m.text, r.name as roomname FROM messages AS m JOIN users AS u ON m.user_id = u.id JOIN rooms AS r ON m.room_id = r.id;')
+        .then(function(rows) {
+          callback(rows);
+        })
+        .catch(function(e) {
+          console.log('error getting: ' + e);
+        });
+    },
     post: function (message) {
-      //message.text
-      //message.user
-
-
-
-      //obtain the roomID for the messages room
       db.getAsync("SELECT id FROM rooms WHERE name = '" + message.room + "'")
         .then(function(rows) {
           console.log(rows.id);
@@ -34,75 +34,16 @@ module.exports = {
         .catch(function(e) {
           console.log("Error doing the db.run(Insert...");
         });
-          //obtain the userID for the messages user
-      //insert message into DB using text, and both IDs
-
-
-
-
-
-
-
-      // var roomId;
-      // var userId;
-
-      // var getUserID = function() { db.getAsync("SELECT id FROM users WHERE name = '" + message.user + "'", function(err, rows) {
-      //     userID = rows[0];
-      //     console.log('got user id: ' + userId);
-      //   });
-      // };
-
-      // var postMessage = function() {db.run("INSERT INTO messages(text, user_id, room_id) VALUES('"+message.text+"', '"+userId+"', '"+roomId+"')", function() {
-      //   console.log('posting message.')
-      //   console.log(message.text);
-      //   console.log(userId);
-      //   console.log(roomId);
-      // })};
-
-      // //select room id
-
-
-
-      // db.getAsync("SELECT id FROM rooms WHERE name = '" + message.room + "'").then(function(err, rows) {
-      //   roomId = rows[0];
-      //   console.log('got room id: ' + roomId);
-      // }).then(getUserID)
-      //   .then(postMessage);
-
-      // , function(err, rows) {
-      //   if (err) {
-      //     console.log(err);
-      //   } else {
-      //     // console.log("No errors. no rows");
-      //     // console.log(rows);
-      //     // roomId = rows.id;
-      //     // console.log(roomId);
-      //   }
-      // });
-
-    } // a function which can be used to insert a message into the database
+    }
   },
 
   users: {
-    // Ditto as above.
     get: function (callback) {
-      db.runAsync("SELECT * FROM users").then(
-        function(err, rows) {
-        if (err) {
-          console.log ("Error selecting * from users: " + err);
-        } else {
+      db.getAsync("SELECT * FROM users").then( function(rows) {
           callback(rows);
-        }
-      });
-
-
-      // db.run("SELECT * FROM users", function(err, rows) {
-      //   if (err) {
-      //     console.log ("Error selecting * from users: " + err);
-      //   } else {
-      //     callback(rows);
-      //   }
-      // });
+        }).catch(function(e) {
+          console.log('error: ' + e);
+        });
     },
     post: function (user) {
       db.run("INSERT INTO users(id, name) VALUES(null, '"+user.name+"')");

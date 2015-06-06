@@ -8,81 +8,84 @@ var path = require('path');
 
 
 describe("Persistent Node Chat Server", function() {
-  var db;
+
+      var postMessage = {
+        method: "POST",
+        uri: "http://127.0.0.1:3000/classes/messages",
+        json: {
+          username: "Valjean",
+          text: "In mercys name, three days is all I need.",
+          room: "Hello"
+        }
+      };
+
+      var getMessages = {
+        method: 'GET',
+        uri: "http://127.0.0.1:3000/classes/messages"
+      };
+
+      var postUser = {
+        url: "http://127.0.0.1:3000/classes/users",
+        json: { name: "Valjean" }
+      };
+
+      var getUsers = "http://127.0.0.1:3000/classes/users"
 
 
-  beforeEach(function(done) {
-    db = new sqlite3.Database('../../chat', done);
 
-    // db = sqlite3.createConnection({
-    //   user: "root",
-    //   password: "",
-    //   database: "chat"
-    // });
-    // db.connect();
-
-    // var tablename = ""; // TODO: fill this out
-
-    //  Empty the db table before each test so that multiple tests
-    //  * (or repeated runs of the tests) won't screw each other up:
-    // db.query("truncate " + tablename, done);
-  });
-
-  afterEach(function() {
-    db.close();
-  });
+  // afterEach(function() {
+  //   db.close();
+  // });
 
 
   it("Should insert posted messages to the DB", function(done) {
     // Post the user to the chat server.
-    request({ method: "POST",
-              uri: "http://127.0.0.1:3000/classes/users",
-              json: { name: "Valjean" }
-    },
-    function () {
-      // Post a message to the node chat server:
-      request({ method: "POST",
-                uri: "http://127.0.0.1:3000/classes/messages",
-                json: {
-                  username: "Valjean",
-                  text: "In mercys name, three days is all I need.",
-                  room: "Hello"
-                }
-              },
-              function () {
-
-                var queryString = "SELECT * FROM messages";
-                var queryArgs = [];
-
-
-                db.run(queryString, function(err, results) {
-                  expect(results.length).to.equal(1);
-                  // expect(results[0].text).to.equal("In mercy's name, three days is all I need.");
-                });
-              }
-              );
+    request.post(postUser, function() {
+      request.get(getUsers, function(error, response, body) {
+        var users = JSON.parse(body);
+        expect(users.name).to.equal(postUser.json.name)
+      });
     });
   });
 
+
+
   xit("Should output all messages from the DB", function(done) {
     // Let's insert a message into the db
-       var queryString = "";
-       var queryArgs = [];
+       // var queryString = "INSERT INTO rooms VALUES('main')";
+       // var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
     // them up to you. */
 
-    db.query(queryString, queryArgs, function(err) {
-      if (err) { throw err; }
 
-      // Now query the Node chat server and see if it returns
-      // the message we just inserted:
-      request("http://127.0.0.1:3000/classes/messages", function(error, response, body) {
-        var messageLog = JSON.parse(body);
-        expect(messageLog[0].text).to.equal("Men like you can never change!");
-        expect(messageLog[0].roomname).to.equal("main");
-        done();
-      });
-    });
+
+
+
+    //make post of room
+    //make post of message in room
+    //check to see if message exists in DB
+    //check to see if message is correctly assigned to room
+
+
+
+
+
+
+
+    //         db.run(queryString, function(err) {
+
+    //         if (err) { throw err; }
+
+    //         // Now query the Node chat server and see if it returns
+    //         // the message we just inserted:
+    //         request("http://127.0.0.1:3000/classes/messages", function(error, response, body) {
+    //           var messageLog = JSON.parse(body);
+    //           expect(messageLog[0].text).to.equal("Men like you can never change!");
+    //           expect(messageLog[0].roomname).to.equal("main");
+    //           done();
+    //         });
+    //       });
+    // });
   });
 });

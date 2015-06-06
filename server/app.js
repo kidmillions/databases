@@ -9,13 +9,12 @@ var parser = require('body-parser');
 var router = require('./routes.js');
 
 var app = express();
-module.exports.app = app;
 
 // Set what we are listening on.
 app.set("port", 3000);
 
 // Logging and parsing
-app.use(morgan('dev'));
+app.use(morgan('combined'));
 app.use(parser.json());
 
 // Set up our routes
@@ -30,3 +29,4 @@ if (!module.parent) {
   console.log("Listening on", app.get("port"));
 }
 
+module.exports.app = app;
