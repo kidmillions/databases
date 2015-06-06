@@ -11,13 +11,17 @@ var sequelize = new Sequelize("chatter", "root", "");
 /* first define the data structure by giving property names and datatypes
  * See http://sequelizejs.com for other datatypes you can use besides STRING. */
 var User = sequelize.define('User', {
-  username: Sequelize.STRING
+  name: Sequelize.STRING
 });
 
 var Message = sequelize.define('Message' {
-  userid: Sequelize.INTEGER,
+  user_id: Sequelize.INTEGER,
   text: Sequelize.STRING,
-  roomname: Sequelize.STRING
+  room_id: Sequelize.INTEGER
+});
+
+var Room = sequalize('Room' {
+  name: Sequelize.STRING
 });
 
 /* .sync() makes Sequelize create the database table for us if it doesn't
