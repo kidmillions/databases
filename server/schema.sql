@@ -3,6 +3,7 @@ DROP TABLE users;
 DROP TABLE rooms;
 
 CREATE TABLE messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   text varchar(1000),
   user_id int,
   room_id int
@@ -20,10 +21,13 @@ CREATE TABLE rooms (
 
 
 /* Create other tables and define schemas for them here! */
-INSERT INTO rooms VALUES(null, 'Hello');
-
-
-
+INSERT INTO rooms VALUES(null, 'HackerRoom');
+INSERT INTO rooms VALUES(null, 'Default');
+INSERT INTO users VALUES(null, 'Eric');
+INSERT INTO users VALUES(null, 'Chris');
+INSERT INTO users VALUES(null, 'Obama');
+INSERT INTO messages VALUES(null, 'New message text in Default room.', 1, 1);
+INSERT INTO messages VALUES(null, 'First post in HackerRoom.', 2, 2);
 
 
 

@@ -6,7 +6,7 @@ module.exports = {
   messages: {
 
     get: function (callback) {
-      db.getAsync('SELECT u.name as username, m.text, r.name as roomname FROM messages AS m JOIN users AS u ON m.user_id = u.id JOIN rooms AS r ON m.room_id = r.id;')
+      db.allAsync('SELECT u.name as username, m.text, r.name as roomname, m.id as id FROM messages AS m JOIN users AS u ON m.user_id = u.id JOIN rooms AS r ON m.room_id = r.id;')
         .then(function(rows) {
           callback(rows);
         })
@@ -15,7 +15,8 @@ module.exports = {
         });
     },
     post: function (message) {
-      db.getAsync("SELECT id FROM rooms WHERE name = '" + message.room + "'")
+
+      db.getAsync("SELECT id FROM rooms WHERE name = '" + message.roomname + "'")
         .then(function(rows) {
           console.log(rows.id);
           return rows.id;
@@ -39,14 +40,19 @@ module.exports = {
 
   users: {
     get: function (callback) {
-      db.getAsync("SELECT * FROM users").then( function(rows) {
+      db.allAsync("SELECT * FROM users").then( function(rows) {
           callback(rows);
         }).catch(function(e) {
           console.log('error: ' + e);
         });
     },
-    post: function (user) {
-      db.run("INSERT INTO users(id, name) VALUES(null, '"+user.name+"')");
+    post: function (user, callback) {
+      // for (var key in user) {
+      //   console.log("at model level: " + key);
+      // }
+      db.run("INSERT INTO users(id, name) VALUES(null, '"+user.name+"')", function(results) {
+        callback(results);
+      });
     }
   }
 };

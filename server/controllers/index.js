@@ -5,8 +5,10 @@ var bluebird = require('bluebird');
 module.exports = {
   messages: {
     get: function (req, res) {
+      // console.log(req);
       models.messages.get(function(response) {
-        res.send(response);
+        // console.log(response);
+        res.json(response);
       });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
@@ -23,8 +25,10 @@ module.exports = {
       });
     },
     post: function (req, res) {
-      models.users.post(req.body);
-      res.send(req.body);
+      // console.log(req.body);
+      models.users.post(req.body, function(results) {
+       res.send(results);
+      });
     }
   }
 };
