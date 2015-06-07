@@ -11,15 +11,21 @@ module.exports = {
   messages: {
     get: function (req, res) {
       // console.log(req);
-      db.messages.findAll()
-
-
-
-
-      models.messages.get(function(response) {
-        // console.log(response);
-        res.json(response);
+      db.messages.findAll({
+        include: [db.users, db.rooms]
+      })
+      .then(function(results) {
+        var body = results.map(function(value, index) {
+          return {text: value.text, username: value.user.name, roomname: value.room.name};
+        });
+        res.json(body);
       });
+
+
+      // models.messages.get(function(response) {
+      //   // console.log(response);
+      //   res.json(response);
+      // });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
       db.users.findOrCreate({
