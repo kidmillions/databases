@@ -21,12 +21,7 @@ module.exports = {
         res.json(body);
       });
 
-
-      // models.messages.get(function(response) {
-      //   // console.log(response);
-      //   res.json(response);
-      // });
-    }, // a function which handles a get request for all messages
+    },
     post: function (req, res) {
       db.users.findOrCreate({
         where: {
@@ -58,14 +53,6 @@ module.exports = {
         console.log('error! ', err);
       });
 
-
-
-
-      // .then(function(result) {
-      //   db.messages.create()
-      // })
-      // models.messages.post(req.body);
-      // res.send(req.body);
     } // a function which handles posting a message to the database
   },
 
@@ -80,24 +67,12 @@ module.exports = {
           console.log("Error: ", err);
         });
 
-
-      // models.users.get(function(response) {
-      //   res.send(response);
-      // });
     },
     post: function (req, res) {
-      // console.log(req.body);
       db.users.create(req.body)
         .then(function(results) {
           res.sendStatus(201);
         })
-
-
-
-
-      // models.users.post(req.body, function(results) {
-      //  res.send(results);
-      // });
     }
   }
 };
